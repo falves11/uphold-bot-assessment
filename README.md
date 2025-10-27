@@ -35,6 +35,17 @@ This option runs the bot directly on your machine, fulfilling Phase 1 (v1)
     npm start
     ```
 
+5.  **Run the Bot (Phase 2 - Custom Configuration):**
+    You can use command-line arguments to customize the monitoring.
+    *   `--pairs`: Comma-separated list of currency pairs (e.g., `BTC-USD,ETH-EUR`).
+    *   `--threshold`: Price oscillation percentage (e.g., `0.01` for 0.01%).
+    *   `--interval`: Fetch interval in milliseconds (e.g., `5000` for 5 seconds).
+
+    Example: Monitor `BTC-USD` and `ETH-EUR` every 3 seconds for a `0.1%` change.
+    ```bash
+    npm start --pairs=BTC-USD,ETH-EUR --threshold=0.1 --interval=3000
+    ```
+
 
 ## Project Structure
 

@@ -10,4 +10,6 @@ export class Logger {
   static error(message: string, ...args: any[]) {
     console.error(`[ERROR] ${message}`, ...args);
   }
+  
+ 
 }

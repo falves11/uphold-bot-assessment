@@ -4,7 +4,6 @@ import { BotConfig } from '../config/BotConfig.js';
 import { PriceService } from './PriceService.js';
 import { Logger } from '../utils/Logger.js';
 
-
 /**
  * Main controller that ties everything together: config, pricing and alerts.
  */
@@ -12,7 +11,7 @@ export class UpholdBot {
   private botConfig: BotConfig;
   private priceFetcherServ: PriceService;
   private alertServ: AlertService;
-  private lastPrice: number = NaN;
+  private lastPrices: Map<string, number> = new Map();
   private intervalId: ReturnType<typeof setInterval> | null = null;
 
   constructor() {
@@ -26,9 +25,9 @@ export class UpholdBot {
    * If yes, triggers an alert.
    */
   private checkOscillation(pair: string, currentPrice: number): void {
-    // store last price for the next ticker update
-    const previous = this.lastPrice;
-    this.lastPrice = currentPrice;
+    // store last price from the current pair for the next ticker update
+    const previous = this.lastPrices.get(pair);
+    this.lastPrices.set(pair, currentPrice);
 
     //skips comparison if is the first recorded price
     if (!previous) return;
@@ -50,12 +49,13 @@ export class UpholdBot {
 
     //schedule price checks using the configured interval
     this.intervalId = setInterval(async () => {
-      //gets price from API through price service
-      const price = await this.priceFetcherServ.getPrice(this.botConfig.getPair());
-
-      //check for oscilation in the retrieved price
-      if (price !== null && !isNaN(price)) this.checkOscillation(this.botConfig.getPair(), price);
-
+      for (const pair of this.botConfig.getPairs()) {
+        //gets price from API through price service
+        const price = await this.priceFetcherServ.getPrice(pair);
+        
+        //check for oscilation in the retrieved price
+        if (price !== null) this.checkOscillation(pair, price);
+      }
     }, this.botConfig.getInterval());
 
     //enable user interaction via console commands
@@ -69,6 +69,7 @@ export class UpholdBot {
       Logger.info("🔴 Bot stopped.");
     }
   }
+
 
   /**
    * Listens for command-line input to interact with the bot
@@ -90,6 +91,4 @@ export class UpholdBot {
 
     Logger.info("🟥 Type 'stop' and press Enter to stop the bot.");
   }
-
-
 }
