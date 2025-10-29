@@ -106,7 +106,8 @@ The bot is configurable via command-line arguments or environment variables.
     ```
 
 2. **Setup the custom variables (Optional)**
-    **2.1. Through `.env` file**
+
+   **2.1. Through `.env` file**
 
         ```env
         # PostgreSQL configuration
@@ -121,7 +122,9 @@ The bot is configurable via command-line arguments or environment variables.
         BOT_THRESHOLD=0.01
         ```
 
-    **2.2. Through environment variables (PowerShell example)**
+
+   **2.2. Through environment variables (PowerShell example)**
+   
         ```powershell
         $env:DB_USER="user"
         $env:BOT_PAIRS="BTC-USD,ETH-USD"
@@ -130,7 +133,7 @@ The bot is configurable via command-line arguments or environment variables.
         docker compose up --build
         ```
 
-3.  **Build and run the containers:**
+4.  **Build and run the containers:**
     This command will build the `uphold-bot-assessment` image, start the `db` container, and then start the bot container, which will automatically connect to the database
     ```bash
     docker-compose up --build
@@ -138,7 +141,7 @@ The bot is configurable via command-line arguments or environment variables.
     - The bot container connects automatically to the database container
     - The bot reads trading pairs, interval, and threshold from the environment variables
 
-4.  **Stopping the containers:**
+5.  **Stopping the containers:**
     Press `Ctrl+C` in the terminal where `docker-compose up` is running, then run:
     ```bash
     docker-compose down
@@ -203,5 +206,6 @@ This bot is designed to be **easy to set up and run** whether locally or via Doc
 - Verify that environment variables or command-line arguments match your setup
 - Using Docker provides a **consistent and isolated environment**, simplifying dependencies and configuration
 - **Note:** No automated tests were added due to time constraints and configuration demands
+
 
 By following this README, anyone should be able to get the bot running smoothly without prior knowledge of the project.
